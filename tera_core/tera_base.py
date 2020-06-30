@@ -150,14 +150,14 @@ class Tera(Pyodbc):
         
 
         if self.opts[n + "_use_integrated_security"][0] == True:
-            conn_string = "DSN=%s" % (n + "_dsn"[0])
+            conn_string = "DSN=%s" % (self.opts[n + "_dsn"][0])
         else:
             conn_string = "DSN=%s; UID=%s; PWD=%s" % (self.opts[n + "_dsn"][0], self.opts[n + "_user"][0], self.connect_pass)
         if self.opts[n + "_host"][0] != "":
             conn_string = conn_string + "; DBCNAME=%s" % (self.opts[n + "_host"][0])
    
         if self.debug:
-            if self.connect_pass != "":
+            if self.connect_pass is not None and self.connect_pass != "":
                 print(conn_string.replace(self.connect_pass, ''))
             else:
                 print(conn_string)
