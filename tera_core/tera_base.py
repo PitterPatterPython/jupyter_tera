@@ -51,7 +51,7 @@ class Tera(Pyodbc):
     myopts[name_str + '_max_rows'] = [1000, 'Max number of rows to return, will potentially add this to queries']
     myopts[name_str + '_user'] = ["tera", "User to connect with  - Can be set via ENV Var: JUPYTER_" + name_str.upper() + "_USER otherwise will prompt"]
     myopts[name_str + '_dsn'] = ["MyDSN", "DSN name registered with ODBCt via ENV Var: JUPYTER_" + name_str.upper() + "_DSN"]
-    myopts[name_str + '_host'] = ["myhost.mydomain.local", "Host name to connect via ENV Var: JUPYTER_" + name_str.upper() + "_HOST"]
+    myopts[name_str + '_host'] = ["", "Host name to connect via ENV Var: JUPYTER_" + name_str.upper() + "_HOST"]
     myopts[name_str + '_use_integrated_security'] = [False, "If selected, UID and PWD not required, and the ODBC driver will used built-in security. Jupyter won't prompt for UID/PWD"]
 
     myopts[name_str + '_last_query'] = ["", "The last query attempted to be run"]
@@ -59,7 +59,7 @@ class Tera(Pyodbc):
 
     # Class Init function - Obtain a reference to the get_ipython()
     def __init__(self, shell, pd_display_grid="html", use_integrated_security=False, *args, **kwargs):
-        super(Tera, self).__init__(shell, pd_display_grid, use_integrated_security) # Change the class name (Start) to match your actual class name
+        super(Tera, self).__init__(shell, pd_display_grid) # Change the class name (Start) to match your actual class name
 
     # No need to change this code
         self.load_env(self.custom_evars) 
@@ -76,7 +76,7 @@ class Tera(Pyodbc):
             self.opts[k] = self.myopts[k]
         # Sets items from Class init. Modify if you modify the class init
         self.opts['pd_display_grid'][0] = pd_display_grid
-        selt.opts[self.name_str + "_use_integrated_security"][0] = use_integrated_security
+        self.opts[self.name_str + "_use_integrated_security"][0] = use_integrated_security
 
     
     def disconnect(self):
@@ -155,6 +155,12 @@ class Tera(Pyodbc):
             conn_string = "DSN=%s; UID=%s; PWD=%s" % (self.opts[n + "_dsn"][0], self.opts[n + "_user"][0], self.connect_pass)
         if self.opts[n + "_host"][0] != "":
             conn_string = conn_string + "; DBCNAME=%s" % (self.opts[n + "_host"][0])
+   
+        if self.debug:
+            if self.connect_pass != "":
+                print(conn_string.replace(self.connect_pass, ''))
+            else:
+                print(conn_string)
 
         try:
             self.connection = po.connect(conn_string, autocommit=True)
