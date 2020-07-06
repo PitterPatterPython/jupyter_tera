@@ -58,11 +58,10 @@ class Tera(Pyodbc):
     myopts[name_str + '_last_use'] = ["", "The use (database) statement ran"]
 
     # Class Init function - Obtain a reference to the get_ipython()
-    def __init__(self, shell, pd_display_grid="html", use_integrated_security=False, *args, **kwargs):
-        super(Tera, self).__init__(shell, pd_display_grid) # Change the class name (Start) to match your actual class name
-
+    def __init__(self, shell, pd_display_grid="html", use_integrated_security=False, debug=False, *args, **kwargs):
+        super(Tera, self).__init__(shell, pd_display_grid=pd_display_grid, debug=debug) # Change the class name (Start) to match your actual class name
+        self.debug = debug
     # No need to change this code
-        self.load_env(self.custom_evars) 
         self.opts['pd_display_grid'][0] = pd_display_grid
         if pd_display_grid == "qgrid":
             try:
@@ -74,6 +73,8 @@ class Tera(Pyodbc):
         #Add local variables to opts dict
         for k in self.myopts.keys():
             self.opts[k] = self.myopts[k]
+        self.load_env(self.custom_evars) 
+
         # Sets items from Class init. Modify if you modify the class init
         self.opts['pd_display_grid'][0] = pd_display_grid
         self.opts[self.name_str + "_use_integrated_security"][0] = use_integrated_security
