@@ -49,30 +49,20 @@ class Tera(Pyodbc):
     myopts['tera_conn_default'] = ["default", 'Default instance name for connections']
 
     # Class Init function - Obtain a reference to the get_ipython()
-    def __init__(self, shell, pd_display_grid="html", tera_conn_url_default="", debug=False, *args, **kwargs):
-        super(Tera, self).__init__(shell, debug=debug, pd_display_grid=pd_display_grid) # Change the class name (Start) to match your actual class name
-        self.debug = debug
 
-        self.opts['pd_display_grid'][0] = pd_display_grid
-        if pd_display_grid == "qgrid":
-            try:
-                import qgrid
-            except:
-                print ("WARNING - QGRID SUPPORT FAILED - defaulting to html")
-                self.opts['pd_display_grid'][0] = "html"
+    def __init__(self, shell, debug=False, *args, **kwargs):
+        super(Tera, self).__init__(shell, debug=debug)
+        self.debug = debug
 
         #Add local variables to opts dict
         for k in self.myopts.keys():
             self.opts[k] = self.myopts[k]
 
         self.load_env(self.custom_evars)
-        if tera_conn_url_default != "":
-            if "default" in self.instances.keys():
-                print("Warning: default instance in ENV and passed to class creation - overwriting ENV")
-            self.fill_instance("default", tera_conn_url_default)
-
         self.parse_instances()
 
+    def retCustomDesc(self):
+        return "Jupyter integration for working with Teradata via PyODBC based data sources"
 
 
     # This is the magic name.
