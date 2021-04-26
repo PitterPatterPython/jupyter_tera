@@ -20,6 +20,7 @@ import ipywidgets as widgets
 
 # Put any additional imports specific to your integration here: 
 import pyodbc as po
+import jupyter_integrations_utility as jiu
 
 @magics_class
 class Tera(Pyodbc):
