@@ -1,2 +1,17 @@
 bulld/*
 build/**
+__pycache__
+__pycache__/*
+__pycache__/**
+*/__pycache__
+**/__pycache__
+jupyter_tera.egg-info
+jupyter_tera.egg-info/*
+jupyter_tera.egg-info/**
+dist
+dist/*
+dist/**
+build
+*.env
+**.env
+
