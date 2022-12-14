@@ -64,7 +64,7 @@ class Tera(Pyodbc):
         self.parse_instances()
 
     def retCustomDesc(self):
-        return "Jupyter integration for working with Teradata via PyODBC based data sources"
+        return __desc__
 
 
     # This is the magic name.
